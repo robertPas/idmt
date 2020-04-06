@@ -5,8 +5,6 @@
  */
 package ibm;
 
-import ibm.lexer.OraToDb2Converter;
-
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -51,6 +49,8 @@ import java.util.TimeZone;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import ibm.lexer.OraToDb2Converter;
 
 public class GenerateExtract
 {
@@ -461,64 +461,64 @@ public class GenerateExtract
 				System.exit(-1);
 			}
             
-            javaHome = (String) propParams.getProperty("javaHome"); 
+            javaHome = propParams.getProperty("javaHome"); 
             shell = IBMExtractUtilities.getShell();
-            appJAR = (String) propParams.getProperty("appJAR");
-            dstJDBC = (String) propParams.getProperty("dstJDBC");
-            debugStr = (String) propParams.getProperty("debug");
-            retainCol = (String) propParams.getProperty("RetainColName");
-            encoding = (String) propParams.getProperty("encoding");
-            sqlFileEncoding = (String) propParams.getProperty("sqlFileEncoding");
+            appJAR = propParams.getProperty("appJAR");
+            dstJDBC = propParams.getProperty("dstJDBC");
+            debugStr = propParams.getProperty("debug");
+            retainCol = propParams.getProperty("RetainColName");
+            encoding = propParams.getProperty("encoding");
+            sqlFileEncoding = propParams.getProperty("sqlFileEncoding");
             if (sqlFileEncoding == null || sqlFileEncoding.length() == 0 || sqlFileEncoding.equalsIgnoreCase("null"))
             	sqlFileEncoding = "UTF-8";
-            msgraphic = (String) propParams.getProperty("graphic");
-            loadstat = (String) propParams.getProperty("loadStats");
-            norowwarningsStr = (String) propParams.getProperty("norowwarnings");
-            dstDBName = (String) propParams.getProperty("dstDBName");
-            customMapping = (String) propParams.getProperty("customMapping");
-            dbclobStr = (String) propParams.getProperty("dbclob");
-            trimTrailingSpacesStr = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("trimTrailingSpaces"), "false");
-            regenerateTriggersStr = (String) propParams.getProperty("regenerateTriggers");
-            remoteLoadStr = (String) propParams.getProperty("remoteLoad");
-            loadExceptionStr = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("loadException"), "true");
-            exceptSchemaSuffix = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("exceptSchemaSuffix"), "_EXP", true);
-            exceptTableSuffix = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("exceptTableSuffix"), "", true);
-            compressTableStr = (String) propParams.getProperty("compressTable");
-            compressIndexStr = (String) propParams.getProperty("compressIndex");
-            extractPartitionsStr = (String) propParams.getProperty("extractPartitions");
-            extractHashPartitionsStr = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("extractHashPartitions"), "false");
-            mysqlZeroDateToNullStr = (String) propParams.getProperty("mysqlZeroDateToNull");
+            msgraphic = propParams.getProperty("graphic");
+            loadstat = propParams.getProperty("loadStats");
+            norowwarningsStr = propParams.getProperty("norowwarnings");
+            dstDBName = propParams.getProperty("dstDBName");
+            customMapping = propParams.getProperty("customMapping");
+            dbclobStr = propParams.getProperty("dbclob");
+            trimTrailingSpacesStr = IBMExtractUtilities.getDefaultString(propParams.getProperty("trimTrailingSpaces"), "false");
+            regenerateTriggersStr = propParams.getProperty("regenerateTriggers");
+            remoteLoadStr = propParams.getProperty("remoteLoad");
+            loadExceptionStr = IBMExtractUtilities.getDefaultString(propParams.getProperty("loadException"), "true");
+            exceptSchemaSuffix = IBMExtractUtilities.getDefaultString(propParams.getProperty("exceptSchemaSuffix"), "_EXP", true);
+            exceptTableSuffix = IBMExtractUtilities.getDefaultString(propParams.getProperty("exceptTableSuffix"), "", true);
+            compressTableStr = propParams.getProperty("compressTable");
+            compressIndexStr = propParams.getProperty("compressIndex");
+            extractPartitionsStr = propParams.getProperty("extractPartitions");
+            extractHashPartitionsStr = IBMExtractUtilities.getDefaultString(propParams.getProperty("extractHashPartitions"), "false");
+            mysqlZeroDateToNullStr = propParams.getProperty("mysqlZeroDateToNull");
             if (mysqlZeroDateToNullStr == null)
             	mysqlZeroDateToNullStr = "false";
-            deleteLoadFileStr = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("deleteLoadFile"), "false");
-            retainConstraintsNameStr = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("retainConstraintsName"), "false");
-            useBestPracticeTSNamesStr = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("useBestPracticeTSNames"), "true");
-            dstDB2Home = (String) propParams.getProperty("dstDB2Home");
-            db2Instance = (String) propParams.getProperty("dstDB2Instance");            
-            dstDBReleaseStr = (String) propParams.getProperty("dstDBRelease");
-            limitExtractRows = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("limitExtractRows"),"ALL");
-            mapCharToVarchar = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("mapCharToVarchar"), "false");
-            varcharLimit = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("varcharLimit"), "4096");
-            caseSensitiveTabColName = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("caseSensitiveTabColName"), "false");
-            mapTimeToTimestamp = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("mapTimeToTimestamp"), "false");
-            convertOracleTimeStampWithTimeZone2Varchar = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("convertOracleTimeStampWithTimeZone2Varchar"), "false");
-            convertTimeStampWithTimeZone2UTCTime = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("convertTimeStampWithTimeZone2UTCTime"), "false");
-            limitLoadRows = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("limitLoadRows"), "ALL");
-            extentSizeinBytes = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("extentSizeinBytes"),"36000");
-            commitCount = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("commitCount"),"100");
-            saveCount = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("saveCount"),"0");            
-            warningCount = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("warningCount"),"0");            
-            batchSizeDisplay = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("batchSizeDisplay"),"0");
-            loadDirectory = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("loadDirectory"), OUTPUT_DIR);
-            tempFilesPath = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("tempFilesPath"), ""); 
-            sourceSchemaList = (String) propParams.getProperty("srcSchName");
-            destinationSchemaList = (String) propParams.getProperty("dstSchName");
-            selectSchemaName = (String) propParams.getProperty("selectSchemaName");
+            deleteLoadFileStr = IBMExtractUtilities.getDefaultString(propParams.getProperty("deleteLoadFile"), "false");
+            retainConstraintsNameStr = IBMExtractUtilities.getDefaultString(propParams.getProperty("retainConstraintsName"), "false");
+            useBestPracticeTSNamesStr = IBMExtractUtilities.getDefaultString(propParams.getProperty("useBestPracticeTSNames"), "true");
+            dstDB2Home = propParams.getProperty("dstDB2Home");
+            db2Instance = propParams.getProperty("dstDB2Instance");            
+            dstDBReleaseStr = propParams.getProperty("dstDBRelease");
+            limitExtractRows = IBMExtractUtilities.getDefaultString(propParams.getProperty("limitExtractRows"),"ALL");
+            mapCharToVarchar = IBMExtractUtilities.getDefaultString(propParams.getProperty("mapCharToVarchar"), "false");
+            varcharLimit = IBMExtractUtilities.getDefaultString(propParams.getProperty("varcharLimit"), "4096");
+            caseSensitiveTabColName = IBMExtractUtilities.getDefaultString(propParams.getProperty("caseSensitiveTabColName"), "false");
+            mapTimeToTimestamp = IBMExtractUtilities.getDefaultString(propParams.getProperty("mapTimeToTimestamp"), "false");
+            convertOracleTimeStampWithTimeZone2Varchar = IBMExtractUtilities.getDefaultString(propParams.getProperty("convertOracleTimeStampWithTimeZone2Varchar"), "false");
+            convertTimeStampWithTimeZone2UTCTime = IBMExtractUtilities.getDefaultString(propParams.getProperty("convertTimeStampWithTimeZone2UTCTime"), "false");
+            limitLoadRows = IBMExtractUtilities.getDefaultString(propParams.getProperty("limitLoadRows"), "ALL");
+            extentSizeinBytes = IBMExtractUtilities.getDefaultString(propParams.getProperty("extentSizeinBytes"),"36000");
+            commitCount = IBMExtractUtilities.getDefaultString(propParams.getProperty("commitCount"),"100");
+            saveCount = IBMExtractUtilities.getDefaultString(propParams.getProperty("saveCount"),"0");            
+            warningCount = IBMExtractUtilities.getDefaultString(propParams.getProperty("warningCount"),"0");            
+            batchSizeDisplay = IBMExtractUtilities.getDefaultString(propParams.getProperty("batchSizeDisplay"),"0");
+            loadDirectory = IBMExtractUtilities.getDefaultString(propParams.getProperty("loadDirectory"), OUTPUT_DIR);
+            tempFilesPath = IBMExtractUtilities.getDefaultString(propParams.getProperty("tempFilesPath"), ""); 
+            sourceSchemaList = propParams.getProperty("srcSchName");
+            destinationSchemaList = propParams.getProperty("dstSchName");
+            selectSchemaName = propParams.getProperty("selectSchemaName");
             schemaList = IBMExtractUtilities.GetSingleQuotedString(selectSchemaName,":");
-            clusteredIndexesStr = (String) propParams.getProperty("clusteredIndexes");
-            oracleNumberMapping = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("oracleNumberMapping"), "false"); 
-            sybaseConvClass = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("sybaseConvClass"), "");
-            sybaseUDTConversionToBaseType = IBMExtractUtilities.getDefaultString((String) propParams.getProperty("sybaseUDTConversionToBaseType"),"false");
+            clusteredIndexesStr = propParams.getProperty("clusteredIndexes");
+            oracleNumberMapping = IBMExtractUtilities.getDefaultString(propParams.getProperty("oracleNumberMapping"), "false"); 
+            sybaseConvClass = IBMExtractUtilities.getDefaultString(propParams.getProperty("sybaseConvClass"), "");
+            sybaseUDTConversionToBaseType = IBMExtractUtilities.getDefaultString(propParams.getProperty("sybaseUDTConversionToBaseType"),"false");
             if (usePipe && syncLoad)
             {
             	log("You can either use pipe or sync load. Please correct unload script and re-run.");
@@ -561,13 +561,13 @@ public class GenerateExtract
             remoteLoad = Boolean.valueOf(remoteLoadStr).booleanValue();
             loadException = Boolean.valueOf(loadExceptionStr).booleanValue();
             
-        	dstServer = (String) propParams.getProperty("dstServer");
+        	dstServer = propParams.getProperty("dstServer");
             if (dstServer == null || dstServer.length() == 0)
             {
             	log("Valid value for DB2 Server Address (dstServer) not found in "+IBMExtractUtilities.getConfigFile()+" file.");
             	System.exit(-1);                	
             }            	
-        	String portStr = (String) propParams.getProperty("dstPort");
+        	String portStr = propParams.getProperty("dstPort");
         	try 
         	{ 
         		dstPort = Integer.valueOf(portStr); 
@@ -581,8 +581,8 @@ public class GenerateExtract
         		log("Valid value for DB2 port number (dstPort) not found in "+IBMExtractUtilities.getConfigFile()+" file.");
             	System.exit(-1);                	
             }            	
-            dstUid = (String) propParams.getProperty("dstUid");
-            dstPwd = (String) propParams.getProperty("dstPwd");  
+            dstUid = propParams.getProperty("dstUid");
+            dstPwd = propParams.getProperty("dstPwd");  
             if (dstUid == null || dstUid.length() == 0)
             {
             	log("Valid value for DB2 user id (dstUid) not found in "+IBMExtractUtilities.getConfigFile()+" file.");
@@ -1169,9 +1169,9 @@ public class GenerateExtract
 	    				allocatedSpace = s.rs.getLong(1);
 	    			}
 	    			usedSpace = allocatedSpace - freeSpace;
-	    			allocated = IBMExtractUtilities.getSize((double) allocatedSpace, "");
-	    			used = IBMExtractUtilities.getSize((double) usedSpace, "");
-	    			free = IBMExtractUtilities.getSize((double) freeSpace, "");
+	    			allocated = IBMExtractUtilities.getSize(allocatedSpace, "");
+	    			used = IBMExtractUtilities.getSize(usedSpace, "");
+	    			free = IBMExtractUtilities.getSize(freeSpace, "");
 	    			s.close(methodName);
 	                    db2tsbpWriter.write("-- **** Oracle Database Size Information for Planning Purpose **** " + linesep);
 	                    db2tsbpWriter.write("-- **** This information is extracted at the Oracle instance level **** " + linesep);
@@ -2273,14 +2273,14 @@ public class GenerateExtract
 				        buffer.append("--#SET :TRIGGER:" + dstSchema + ":" + triggerName + linesep);
 				        buffer.append(chunks);
 			            buffer.append(linesep + sqlTerminator + linesep);
-		            	db2ObjectsWriter[(Integer) plsqlHashTable.get("TRIGGER".toLowerCase())].write(buffer.toString());
+		            	db2ObjectsWriter[plsqlHashTable.get("TRIGGER".toLowerCase())].write(buffer.toString());
 		            } else if (mainData.iDB2() || mainData.Mysql())
 		            {
-		               db2ObjectsWriter[(Integer) plsqlHashTable.get("TRIGGER".toLowerCase())].write(getTriggerSource(triggerSchema, triggerName));
+		               db2ObjectsWriter[plsqlHashTable.get("TRIGGER".toLowerCase())].write(getTriggerSource(triggerSchema, triggerName));
 		            }
 		            else
 		            {
-		               db2ObjectsWriter[(Integer) plsqlHashTable.get("TRIGGER".toLowerCase())].write(getTriggerSource(triggerSchema, triggerName));		            	
+		               db2ObjectsWriter[plsqlHashTable.get("TRIGGER".toLowerCase())].write(getTriggerSource(triggerSchema, triggerName));		            	
 		            }
 		            if (objCount > 0 && objCount % 20 == 0)
 		            	log(objCount + " # Triggers extracted for schema " + schema);
@@ -2315,7 +2315,7 @@ public class GenerateExtract
 	        while (e.hasMoreElements()) 
 	        {
 	           key = (String) e.nextElement();
-	           value = (String) udtProp.getProperty(key);
+	           value = udtProp.getProperty(key);
 	           buffer = buffer.replaceAll("(?ism)"+key, value);
 	        }
         }
@@ -2385,7 +2385,7 @@ public class GenerateExtract
 	        int objCount = 0, fileID = 0;
 	        if (plsqlHashTable.containsKey(objType.toLowerCase()))
 	        {
-	        	fileID = (Integer) plsqlHashTable.get(objType.toLowerCase());
+	        	fileID = plsqlHashTable.get(objType.toLowerCase());
 	        }
 	        while (s.next()) 
 	        {
@@ -3004,7 +3004,7 @@ public class GenerateExtract
             		{
                   	    try
     					{
-    						db2ObjectsWriter[(Integer) plsqlHashTable.get("GRANTS".toLowerCase())].write("CREATE ROLE " + roles[i] + linesep + sqlTerminator + linesep);
+    						db2ObjectsWriter[plsqlHashTable.get("GRANTS".toLowerCase())].write("CREATE ROLE " + roles[i] + linesep + sqlTerminator + linesep);
     					} catch (IOException e)
     					{
     						e.printStackTrace();
@@ -3061,7 +3061,7 @@ public class GenerateExtract
         	  if (auth.endsWith("GRANT"))
         		  buffer.append(" WITH GRANT OPTION");
         	  buffer.append(linesep + sqlTerminator + linesep);
-        	  db2ObjectsWriter[(Integer) plsqlHashTable.get("GRANTS".toLowerCase())].write(buffer.toString());
+        	  db2ObjectsWriter[plsqlHashTable.get("GRANTS".toLowerCase())].write(buffer.toString());
         	  if (objCount > 0 && objCount % 20 == 0)
 	            	log(objCount + " # grants extracted for schema " + schema);
         	  objCount++;
@@ -3109,7 +3109,7 @@ public class GenerateExtract
 	          buffer.append(sqlTerminator + linesep);
         	  buffer.append("CALL SQLJ.REFRESH_CLASSES()" + linesep);
 	          buffer.append(sqlTerminator + linesep);
-        	  db2ObjectsWriter[(Integer) plsqlHashTable.get("JAVAJARS".toLowerCase())].write(buffer.toString());
+        	  db2ObjectsWriter[plsqlHashTable.get("JAVAJARS".toLowerCase())].write(buffer.toString());
           }
           s.close(methodName); 
          } catch (Exception e)
@@ -3343,7 +3343,7 @@ public class GenerateExtract
             		  buffer.append("CARDINALITY " + cardinality + linesep);
               }
           	  buffer.append(linesep + sqlTerminator + linesep + linesep);   
-          	  db2ObjectsWriter[(Integer) plsqlHashTable.get("ROUTINE".toLowerCase())].write(buffer.toString());
+          	  db2ObjectsWriter[plsqlHashTable.get("ROUTINE".toLowerCase())].write(buffer.toString());
           }
           s.close(methodName); 
         } catch (Exception e)
@@ -3845,7 +3845,7 @@ public class GenerateExtract
 	            if (objCount > 0 && objCount % 20 == 0)
 	            	log(objCount + " # Global Variables extracted for schema " + schema);
 	            objCount++;
-	            db2ObjectsWriter[(Integer) plsqlHashTable.get((String) "VARIABLE".toLowerCase())].write(sb.toString());
+	            db2ObjectsWriter[plsqlHashTable.get("VARIABLE".toLowerCase())].write(sb.toString());
 	        }
 	        if (objCount > 0)
 	    	   log(objCount + " Total # Global Variables extracted for schema " + schema);
@@ -4528,7 +4528,7 @@ public class GenerateExtract
 		            if (objCount > 0 && objCount % 20 == 0)
 		            	log(objCount + " # PL/SQL objects extracted for schema " + schema);
 		            objCount++;
-		            db2ObjectsWriter[(Integer) plsqlHashTable.get((String) type.toLowerCase())].write(buffer.toString());
+		            db2ObjectsWriter[plsqlHashTable.get(type.toLowerCase())].write(buffer.toString());
 	        	} catch (IOException e)
 	        	{
 	        		log("Error writing PL/SQL in file " + e.getMessage());
@@ -4766,7 +4766,7 @@ public class GenerateExtract
     		            buffer.append("ALTER MODULE " + putQuote(dstSchema) + "." + putQuote(module) + linesep);
     		            published = (published != null && published.equals("Y")) ? "PUBLISH" : "ADD";
     		            buffer.append(published + " CONDITION " + putQuote(condName) + " FOR SQLSTATE '" + sqlState + "'" + linesep + sqlTerminator + linesep);
-			            db2ObjectsWriter[(Integer) plsqlHashTable.get("MODULE".toLowerCase())].write(buffer.toString());
+			            db2ObjectsWriter[plsqlHashTable.get("MODULE".toLowerCase())].write(buffer.toString());
     		            if (objCount > 0 && objCount % 20 == 0)
     		            	log(objCount + " # SQL Module conditions extracted for module " + schema+"."+module);
     		            objCount++;
@@ -4823,7 +4823,7 @@ public class GenerateExtract
     		            db2DropObjectsWriter.write("ALTER MODULE " + putQuote(dstSchema) + "." + putQuote(module) + linesep);
     		            db2DropObjectsWriter.write("DROP SPECIFIC "+routineType+" " + putQuote(specificName) + linesep + sqlTerminator + linesep);
     		            buffer.append(chunks + linesep + sqlTerminator + linesep);
-			            db2ObjectsWriter[(Integer) plsqlHashTable.get("MODULE".toLowerCase())].write(buffer.toString());
+			            db2ObjectsWriter[plsqlHashTable.get("MODULE".toLowerCase())].write(buffer.toString());
     		            if (objCount > 0 && objCount % 20 == 0)
     		            	log(objCount + " # SQL Module Procedures / Functions extracted for module " + schema+"."+module);
     		            objCount++;
@@ -4926,7 +4926,7 @@ public class GenerateExtract
      		                buffer.append(published + " TYPE " + putQuote(typeName) + " AS " + colType);
     		            }
     		            buffer.append(linesep + sqlTerminator + linesep);
-			            db2ObjectsWriter[(Integer) plsqlHashTable.get("MODULE".toLowerCase())].write(buffer.toString());
+			            db2ObjectsWriter[plsqlHashTable.get("MODULE".toLowerCase())].write(buffer.toString());
     		            if (objCount > 0 && objCount % 20 == 0)
     		            	log(objCount + " # SQL Module Types extracted for module " + schema+"."+module);
     		            objCount++;
@@ -4994,7 +4994,7 @@ public class GenerateExtract
     		            if (objCount > 0 && objCount % 20 == 0)
     		            	log(objCount + " # SQL Module Variables extracted for module " + schema+"."+module);
     		            objCount++;
-			            db2ObjectsWriter[(Integer) plsqlHashTable.get("MODULE".toLowerCase())].write(buffer.toString());
+			            db2ObjectsWriter[plsqlHashTable.get("MODULE".toLowerCase())].write(buffer.toString());
     		            if (objCount > 0 && objCount % 20 == 0)
     		            	log(objCount + " # SQL Module Variables extracted for module " + schema+"."+module);
     		            objCount++;
@@ -5023,7 +5023,7 @@ public class GenerateExtract
 		        			comment = comment.substring(1,255);
 		        		comment = comment.replace("'", "''");
 		        		buffer.append("COMMENT ON MODULE " + putQuote(dstSchema) + "." + putQuote(module) + " IS '" + comment + "'" + linesep + sqlTerminator + linesep);
-			            db2ObjectsWriter[(Integer) plsqlHashTable.get("MODULE".toLowerCase())].write(buffer.toString());
+			            db2ObjectsWriter[plsqlHashTable.get("MODULE".toLowerCase())].write(buffer.toString());
 	        		}
 				} catch (IOException e)
 				{
@@ -5115,9 +5115,9 @@ public class GenerateExtract
 			               buffer.append("--#SET :PACKAGE BODY:" + dstSchema + ":" + specificName + linesep);
 			            buffer.append(chunks);
 			            buffer.append(linesep + sqlTerminator + linesep);
-			            db2ObjectsWriter[(Integer) plsqlHashTable.get("PROCEDURE".toLowerCase())].write(buffer.toString());
+			            db2ObjectsWriter[plsqlHashTable.get("PROCEDURE".toLowerCase())].write(buffer.toString());
 		            } else
-		               db2ObjectsWriter[(Integer) plsqlHashTable.get("PROCEDURE".toLowerCase())].write(getProcedureSource(specificSchema, specificName));
+		               db2ObjectsWriter[plsqlHashTable.get("PROCEDURE".toLowerCase())].write(getProcedureSource(specificSchema, specificName));
 		            if (objCount > 0 && objCount % 20 == 0)
 		            	log(objCount + " # SQL PL procedures extracted for schema " + schema);
 		            objCount++;
@@ -5224,7 +5224,7 @@ public class GenerateExtract
 			            typeStr = "CREATE TYPE " + putQuote(dstSchema) + "." + putQuote(typeName) + linesep +
                                      "AS (" + colType + ")" + linesep + "MODE DB2SQL";
 		            }
-		            db2ObjectsWriter[(Integer) plsqlHashTable.get("TYPE".toLowerCase())].write(typeStr + linesep + sqlTerminator + linesep);
+		            db2ObjectsWriter[plsqlHashTable.get("TYPE".toLowerCase())].write(typeStr + linesep + sqlTerminator + linesep);
 		            if (objCount > 0 && objCount % 20 == 0)
 		            	log(objCount + " # TYPES extracted for schema " + schema);
 		            objCount++;
@@ -5290,7 +5290,7 @@ public class GenerateExtract
 			            db2DropObjectsWriter.write("--#SET :DROP:FUNCTION:"+specificName + linesep);    		            		            	
 			            db2DropObjectsWriter.write("DROP SPECIFIC FUNCTION " + putQuote(dstSchema) + "." + putQuote(specificName) + ";" + linesep);		            	
 		            }
-		            db2ObjectsWriter[(Integer) plsqlHashTable.get("FUNCTION".toLowerCase())].write(getFunctionSource(specificSchema, specificName, functionType));
+		            db2ObjectsWriter[plsqlHashTable.get("FUNCTION".toLowerCase())].write(getFunctionSource(specificSchema, specificName, functionType));
 		            if (objCount > 0 && objCount % 20 == 0)
 		            	log(objCount + " # SQL Functions extracted for schema " + schema);
 		            objCount++;
@@ -5825,7 +5825,7 @@ public class GenerateExtract
 	            buffer.append("--#SET :XMLCOMPLETE:" + objectSchema + ":" + objectName + linesep);      
 	        	buffer.append("COMPLETE XMLSCHEMA " + putQuote(objectSchema) + "." + putQuote(objectName) + linesep);
 	        	buffer.append("WITH " + xmlFile + linesep + ";" + linesep);
-	        	db2ObjectsWriter[(Integer) plsqlHashTable.get("XMLSCHEMA".toLowerCase())].write(buffer.toString());
+	        	db2ObjectsWriter[plsqlHashTable.get("XMLSCHEMA".toLowerCase())].write(buffer.toString());
 	            db2DropObjectsWriter.write("--#SET :DROP:XMLSCHEMA:"+objectName + linesep);    		            
 	            db2DropObjectsWriter.write("DROP XMLSCHEMA " + putQuote(objectSchema) + "." + putQuote(objectName) + ";" + linesep);
                 if (num > 0 && num % 20 == 0)
@@ -7232,7 +7232,8 @@ public class GenerateExtract
     		this.baseType = baseType;
     	}
     	
-    	public String toString()
+    	@Override
+      public String toString()
     	{
     		return "userType="+userType+":baseType="+baseType;
     	}
@@ -7304,7 +7305,8 @@ public class GenerateExtract
             }
         }
 
-        public void run()
+        @Override
+      public void run()
         {
             setName("Blade_" + number);
             log("Starting " + Thread.currentThread().getName() + " and building memory map.");
@@ -8614,7 +8616,7 @@ public class GenerateExtract
             Collections.sort(v);	            
             for (Enumeration e = v.elements(); e.hasMoreElements();) {
                 if (found) buffer.append(",");
-                String val = (String)pkCols.get((Integer)e.nextElement());
+                String val = (String)pkCols.get(e.nextElement());
                 buffer.append(val);
                 found = true;
             }
@@ -8638,7 +8640,7 @@ public class GenerateExtract
             Collections.sort(v);	            
             for (Enumeration e = v.elements(); e.hasMoreElements();) 
             {
-                String val = (String)pkCols.get((Integer)e.nextElement());
+                String val = (String)pkCols.get(e.nextElement());
                 if (found) uniqBuffer.append(",");
                 uniqBuffer.append(putQuote(putQuote(getCaseName(getCustomColumnName(schema, table, val)))));
                 found = true;
@@ -8734,7 +8736,7 @@ public class GenerateExtract
 	            Collections.sort(v);	            
 	            for (Enumeration e = v.elements(); e.hasMoreElements();) {
 	                if (found) buffer.append(",");
-	                String val = (String)pkCols.get((Integer)e.nextElement());
+	                String val = (String)pkCols.get(e.nextElement());
 	                buffer.append(putQuote(getCaseName(getCustomColumnName(schema, table, val))));
 	                found = true;
 	            }
@@ -8776,7 +8778,7 @@ public class GenerateExtract
 	            Collections.sort(v);	            
 	            for (Enumeration e = v.elements(); e.hasMoreElements();) {
 	                if (found) buffer.append(",");
-	                String val = (String)pkCols.get((Integer)e.nextElement());
+	                String val = (String)pkCols.get(e.nextElement());
 	                buffer.append(putQuote(putQuote(getCaseName(getCustomColumnName(schema, table, val)))));
 	                found = true;
 	            }
@@ -10069,19 +10071,19 @@ public class GenerateExtract
         	String key = removeQuote(schemaName) + "." + removeQuote(tableName);
         	String tsName = "", dataTS = "", idxTS = "", longTS = "";
         	
-        	dataTS = (String) custTSBP.getProperty(key+".DATA");
+        	dataTS = custTSBP.getProperty(key+".DATA");
         	if (dataTS != null && dataTS.length() > 0)
         	{
         		dataTS = "IN " + dataTS + " ";
         	} else
         		dataTS = "";
-        	idxTS = (String) custTSBP.getProperty(key+".INDEX");
+        	idxTS = custTSBP.getProperty(key+".INDEX");
         	if (idxTS != null && idxTS.length() > 0)
         	{
         		idxTS = " INDEX IN " + idxTS + " ";
         	} else
         		idxTS = "";
-        	longTS = (String) custTSBP.getProperty(key+".LONG");
+        	longTS = custTSBP.getProperty(key+".LONG");
         	if (longTS != null && longTS.length() > 0)
         	{
         		longTS = " LONG IN " + longTS + " ";
