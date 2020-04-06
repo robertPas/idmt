@@ -3217,6 +3217,7 @@ public class GenerateExtract
         	  language = trim(s.rs.getString(7));
         	  sourceSchema = trim(s.rs.getString(8));
         	  sourceSpecific = trim(s.rs.getString(9));
+        	  String deterministic = s.rs.getString("deterministic");
         	  procType = (routineType.equals("F") ? "FUNCTION" : "PROCEDURE");
 	          db2DropObjectsWriter.write("--#SET :DROP:"+procType+":" + specificName + linesep);
 	          db2DropObjectsWriter.write("DROP SPECIFIC "+procType+" " + putQuote(getCaseName(dstSchema)) + "." + putQuote(getCaseName(specificName)) + ";" + linesep);
@@ -3338,6 +3339,14 @@ public class GenerateExtract
             		  buffer.append("DBINFO" + linesep);
             	  else
             		  buffer.append("NO DBINFO" + linesep);
+            	  if ("Y".equals(deterministic))
+            	  {
+            	     buffer.append("DETERMINISTIC").append(linesep);
+            	  }
+            	  else if ("N".equals(deterministic))
+                 {
+                    buffer.append("NOT DETERMINISTIC").append(linesep);
+                 }
             	  int cardinality = s.rs.getInt(25);
             	  if (cardinality > 0)
             		  buffer.append("CARDINALITY " + cardinality + linesep);
