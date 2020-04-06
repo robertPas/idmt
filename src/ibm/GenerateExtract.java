@@ -3337,7 +3337,7 @@ public class GenerateExtract
             	  if (dbInfo != null && dbInfo.equals("Y"))
             		  buffer.append("DBINFO" + linesep);
             	  else
-            		  buffer.append("NODBINFO" + linesep);
+            		  buffer.append("NO DBINFO" + linesep);
             	  int cardinality = s.rs.getInt(25);
             	  if (cardinality > 0)
             		  buffer.append("CARDINALITY " + cardinality + linesep);
