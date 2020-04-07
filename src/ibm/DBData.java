@@ -179,7 +179,7 @@ public class DBData
         }
         else 
         {
-            url = (String) propURL.get(dbSourceName) + server + ":" + port + "/" + dbName;                
+            url = (String) propURL.get(dbSourceName) + server + ":" + port + "/" + dbName + ":retrieveMessagesFromServerOnGetMessage=true;";                
         }
         String additionalURL = IBMExtractUtilities.getDefaultString(IBMExtractUtilities.getIDMTProperty("additionalURLProperties"), "null") ;
         if (!additionalURL.equalsIgnoreCase("null"))
@@ -280,7 +280,7 @@ public class DBData
 		{
 			e.printStackTrace();
 		}			
-    	driverName = (String) propDrivers.getProperty(dbSourceName.toLowerCase());
+    	driverName = propDrivers.getProperty(dbSourceName.toLowerCase());
 		if (dbSourceName.equalsIgnoreCase("sybase"))
 		{
 			driverName = fixSybaseDriverName(driverName);
