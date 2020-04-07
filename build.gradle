@@ -1,0 +1,63 @@
+plugins {
+	id 'java'
+	id 'eclipse'
+}
+
+group = 'ibm'
+version = '2.0rp' // -SNAPSHOT
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+ext {
+	jarName = 'IBMDataMovementTool.jar'
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+	implementation 'com.ibm.db2:jcc:11.5.0.0'
+	implementation 'com.oracle.jdbc:ojdbc-java6:12.1.0.1'
+	implementation 'com.oracle.database.xml:xdb:19.3.0.0'
+	
+//	implementation fileTree('lib/jdbc') { include '*.jar' }
+
+	/* Files from z/OS (I'm pretty sure I'm not allowed to redistribute them):
+	ibmjzos.jar: from IBM JDK for z/OS in lib/ext
+	EZAFTP.jar: from /usr/include/java_classes
+	*/
+	implementation files('lib/zos/ibmjzos.jar', 'lib/zos/EZAFTP.jar')
+}
+
+jar {
+//	baseName 'IBMDataMovementTool'
+	// fixed filename because of start-scripts (.cmd/.sh)
+	archiveFileName = jarName
+	manifest {
+		attributes("Main-Class": "ibm.RunTool",
+					"Implementation-Version": archiveVersion)
+	}
+}
+
+task dist(type: Zip) {
+    archiveFileName = "IBMDataMovementTool-${version}.zip"
+    destinationDirectory = file("$buildDir/dist")
+    
+    from("$buildDir/libs") {
+        include jarName
+    }
+
+    from("$rootDir") {
+        include "IBMDataMovementTool.cmd"
+        include "IBMDataMovementTool.sh"
+        include "Pipe.dll"
+        include "Pipe64.dll"
+    }
+} 
+
+wrapper {
+	gradleVersion = '6.2'
+}

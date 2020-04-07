@@ -8,3 +8,5 @@ IBMDatamovementToolVersion.jpg
 *.log
 GetIDMTUpdate.cmd
 IBMDataMovementTool.zip
+/.gradle/
+lib/zos
